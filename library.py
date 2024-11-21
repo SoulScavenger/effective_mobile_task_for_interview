@@ -39,7 +39,8 @@ class Library:
                 json.dump(
                     [{"next_id": self.__next_book_id, "books": self.__books}],
                     file,
-                    indent=INDENT)
+                    indent=INDENT
+                )
         except IOError as err:
             print(f"Что-то пошло не так... Ошибка: {err}")
 
@@ -48,10 +49,12 @@ class Library:
         """Добавление новой книги."""
         book = {
             'id': self.__next_book_id,
-            'title': input('Введите название книги: ').capitalize(),
-            'author': input('Введите автора книги: ').title(),
-            'year': self.set_year_book(),
-            'status': self.set_status_book()
+            'title': self.set_title(input('Введите название книги: ')),
+            'author': self.set_author(input('Введите автора книги: ')),
+            'year': self.set_year_book(input('Введите год издания книги: ')),
+            'status': self.set_status_book(
+                input('Введите статус книги: 1 - в наличии/0 - выдана: ')
+                )
         }
         self.__books.append(book)
         self.__next_book_id += 1
@@ -108,34 +111,35 @@ class Library:
             if book['id'] == book_id:
                 return self.__books.index(book)
 
-    def set_status_book(self):
-        """Задание статуса книги."""
+    def set_title(self, title):
+        """Задание названия книги."""
         while True:
             try:
-                status = int(
-                    input(
-                        'Введите статус книги: '
-                        '1 - в наличии/0 - выдана: '
-                        )
-                )
-                if status == 1:
-                    return 'в наличии'
-                elif status == 0:
-                    return 'выдана'
-                raise ValueError
+                # title = input('Введите название книги: ')
+                if len(title.strip()) == 0:
+                    raise ValueError
+                return title.capitalize()
             except ValueError:
-                print('Ошибка ввода...')
+                print('Название книги не может быть пустым...')
                 continue
 
-    def set_year_book(self):
+    def set_author(self, author):
+        """Задание автора книги."""
+        while True:
+            try:
+                # author = input('Введите автора книги: ')
+                if len(author.strip()) == 0:
+                    raise ValueError
+                return author.title()
+            except ValueError:
+                print('Имя автора книги не может быть пустым...')
+                continue
+
+    def set_year_book(self, year):
         """Задание года издания книги."""
         while True:
             try:
-                year = int(
-                    input(
-                        'Введите год издания книги: '
-                        )
-                )
+                year = int(year)
                 if year in range(START_YEAR, END_YEAR):
                     return year
 
@@ -145,6 +149,20 @@ class Library:
                     'Ошибка ввода... '
                     'Год издания должен быть в диапазоне с 1457 по 2024 '
                 )
+                continue
+
+    def set_status_book(self, status):
+        """Задание статуса книги."""
+        while True:
+            try:
+                status = int(status)
+                if status == 1:
+                    return 'в наличии'
+                elif status == 0:
+                    return 'выдана'
+                raise ValueError
+            except ValueError:
+                print('Ошибка ввода...')
                 continue
 
     def search_book(self):
