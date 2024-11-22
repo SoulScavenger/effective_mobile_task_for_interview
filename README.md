@@ -8,7 +8,7 @@
 1. Клонировать репозиторий и перейти в него в командной строке:
 
 ```
-git clone https://github.com/SoulScavenger/effective_mobile_task_for_interview
+git clone git@github.com:SoulScavenger/effective_mobile_task_for_interview.git
 ```
 
 ```
